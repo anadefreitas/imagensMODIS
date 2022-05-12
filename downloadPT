@@ -35,15 +35,27 @@ Map.addLayer(
 print(dataset)
 
 //para unir os arquivos de cada dia dentro do intervalo de tempo
-var img = landSurfaceTemperature.toBands() //adiciona todas as imagens filtradas para uma imagem multibandas.
+var img = landSurfaceTemperature.toBands() //adiciona todas as imagens filtradas em uma variável única.
 print(img)
 
-//exportar a imagem
+//exportar a imagem para o drive
 Export.image.toDrive({
   image: img,
   description: 'LST_daily_2011',
   folder:"MODIS-export",
   scale: 250,
   region: area,
+  crs: 'EPSG:4674',
   fileFormat: 'GeoTIFF'
+});
+
+//gerar url para download
+var urlDownload1 = img.getDownloadURL({
+  image: img,
+  description: 'LST_daily_2011',
+  region: area.geometry(),
+  scale: 250,
+  maxPixel: 10000000000000,
+  fileFormat: 'GeoTIFF',
+  crs: 'EPSG:4674'
 });
