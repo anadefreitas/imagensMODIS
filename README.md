@@ -1,4 +1,4 @@
-# imagesMODIS
+# Download de imagens MODIS
 # Elaboração: Ana Larissa Ribeiro de Freitas
 
 O objetivo deste código é possibilitar o download de produtos derivados de imagens MODIS para o período e área de interesse. As imagens são recortadas pela geometria da área de estudo e agrupadas em um único variável para possibilitar o download via drive ou url. 
