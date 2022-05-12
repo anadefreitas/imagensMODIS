@@ -59,3 +59,4 @@ var urlDownload1 = img.getDownloadURL({
   fileFormat: 'GeoTIFF',
   crs: 'EPSG:4674'
 });
+print(urlDownload1);
