@@ -1,0 +1,49 @@
+//Importar a geometria dos "assets" para recortar a área
+
+var area: Table //aqui são inseridos os links para a geometria. O preenchimento é realizado automaticamente quando o arquivo é importado dos Assets
+
+//Função de recorte da área de interesse
+function clipCollec(img){
+  return ee.Image(img).clip(area).copyProperties(img, ["system:time_start"]);
+}
+
+//Definindo o produto a ser utilizado e as configurações. A estrutura básica é disponibilizada no catálogo de dados do GEE.
+
+var dataset = ee.ImageCollection('MODIS/006/MOD11A1') //coleção de interesse
+                  .filter(ee.Filter.date('2011-01-01', '2011-12-31')) //definir intervalo de tempo
+                  .filter(ee.Filter.bounds(area)) //aqui é adicionado o filtro específico para a áre de interesse
+                  .map(clipCollec); //recorte
+var landSurfaceTemperature = dataset.select('LST_Day_1km'); //aqui é selecionada o arquivo da coleção de interesse, no caso o dado diário.
+
+//abaixo os parâmetros de visualização definidos para esse produto
+var landSurfaceTemperatureVis = {
+  min: 13000.0,
+  max: 16500.0,
+  palette: [
+    '040274', '040281', '0502a3', '0502b8', '0502ce', '0502e6',
+    '0602ff', '235cb1', '307ef3', '269db1', '30c8e2', '32d3ef',
+    '3be285', '3ff38f', '86e26f', '3ae237', 'b5e22e', 'd6e21f',
+    'fff705', 'ffd611', 'ffb613', 'ff8b13', 'ff6e08', 'ff500d',
+    'ff0000', 'de0101', 'c21301', 'a71001', '911003'
+  ],
+};
+Map.setCenter(-55.457, -3.105); //preenchidas as coordenadas de uma região central da área de interesse para que o mapa apareça;
+Map.addLayer(
+    landSurfaceTemperature, landSurfaceTemperatureVis, //entrada e visualização do arquivo
+    'Land Surface Temperature'); //nome para visualização
+    
+print(dataset)
+
+//para unir os arquivos de cada dia dentro do intervalo de tempo
+var img = landSurfaceTemperature.toBands() //adiciona todas as imagens filtradas para uma imagem multibandas.
+print(img)
+
+//exportar a imagem
+Export.image.toDrive({
+  image: img,
+  description: 'LST_daily_2011',
+  folder:"MODIS-export",
+  scale: 250,
+  region: area,
+  fileFormat: 'GeoTIFF'
+});
