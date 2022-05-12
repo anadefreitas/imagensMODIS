@@ -1,14 +1,9 @@
 # imagesMODIS
 # Elaboração: Ana Larissa Ribeiro de Freitas
 
-O objetivo deste código é possibilitar o download de produtos derivados de imagens MODIS para o período de tempo de interesse. As imagens são recortadas pela geometria da área de estudo e agrupadas em um único raster multibandas, quando exportado para o drive, ou podem ser obtidas separadamente via url. É importante ressaltar, que dependendo da área de interesse a exportação de rasters multibandas pode ser prejudicada. Desta forma, indica-se que nestes casos sejam utilizados intervalos de tempo menores para agrupar os mesmos.
+O objetivo deste código é possibilitar o download de produtos derivados de imagens MODIS para o período e área de interesse. As imagens são recortadas pela geometria da área de estudo e agrupadas em um único variável para possibilitar o download via drive ou url. 
 
-Para realizar o download são disponibilizados dois procedimentos:
-1 - para o drive
-2 - gerar url para acesso
-
-A url de acesso possui uma limitação de tamanho de arquivo menor do que o do drive. No entanto, é uma alternativa que funciona para compartilhamentos rápidos e
-evitar o uso do drive em casos onde o mesmo esteja cheio. Assim, novamente, a delimitação da área e período de interesse é essencial para a criação do produto final.
+É importante ressaltar, que dependendo da área de interesse a exportação de rasters pode ser prejudicada. Desta forma, indica-se que nestes casos sejam utilizados intervalos de tempo e/ou áreas menores para agrupar os mesmos. A url de acesso possui uma limitação de tamanho de arquivo menor do que o do drive. No entanto, é uma alternativa que funciona para compartilhamentos rápidos e evitar o uso do drive em casos onde o mesmo esteja cheio.
 
 ########## Console com os prints ##########
 
