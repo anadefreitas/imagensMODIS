@@ -1,0 +1,31 @@
+##Script by Ana Larissa Freitas
+##RStudio version: R-4.1.0-win
+##Date: 10/06/2022
+
+library(raster) #importe a biblioteca necessária 
+
+setwd("C:/diretório") #set diretório
+diretorio <- getwd() #atribuir o caminho do diretório na variável para localizar os arquivos na próxima linha
+
+lista <- list.files(path = diretorio, pattern='.tif', all.files=TRUE, full.names=FALSE) #listar os arquivos rasters 
+
+fnc <- function(x) {(x*0.02)-273.15} #função para conversão em °C
+
+#Início dos loops para o stack, processamento e escrita dos rasters
+for (i in 1:length(lista)){ #realiza o procedimento a seguir para cada arquivo da lista
+  image_stack <- stack(lista[i]) #fazer o stack
+  
+  celsius <- calc(image_stack, fnc) #aplicar a função para °C nos rasters do stack
+  celsius[celsius < 0] <- NA  #esse produto pode resultar em valores negativos, aqui, será atribuído o valor de NA para tudo o que for menor que 0
+  
+  nomes_layers <- names(image_stack) #fazendo o stack de raster multbands no for, os nomes destas são preservados, aqui, lemos esses nomes
+  
+  #O loop a seguir, irá salvar cada banda com o seu respectivo nome 
+  for (j in 1:length(nomes_layers)){
+    nome = nomes_layers[j]
+    writeRaster(x = celsius[[j]], filename = paste(nome, ".tif", sep = "")) #saída dos rasters
+  }
+  
+}
+
+### Fim do código ###
